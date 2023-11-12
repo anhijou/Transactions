@@ -1,0 +1,17 @@
+{
+    "name": "anhijou/phpiggy",
+    "description": "a php application for tracking expenses",
+    "type": "project",
+    "authors": [
+        {
+            "name": "anhijou"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework",
+            "App\\": "src/App"
+        }
+    }
+}
