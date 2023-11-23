@@ -12,6 +12,10 @@
         "psr-4": {
             "Framework\\": "src/Framework",
             "App\\": "src/App"
-        }
+        },
+        "files": [
+            "src/App/Config/Routes.php",
+            "src/App/Config/Middleware.php"
+        ]
     }
 }
