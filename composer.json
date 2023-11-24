@@ -7,7 +7,9 @@
             "name": "anhijou"
         }
     ],
-    "require": {},
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
     "autoload": {
         "psr-4": {
             "Framework\\": "src/Framework",
@@ -17,5 +19,8 @@
             "src/App/Config/Routes.php",
             "src/App/Config/Middleware.php"
         ]
+    },
+    "scripts": {
+        "phpiggy": "php cli.php"
     }
 }
