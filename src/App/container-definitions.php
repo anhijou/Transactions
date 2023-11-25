@@ -1,8 +1,9 @@
 <?php
 
-use Framework\{TemplateEngine, Database};
+use Framework\{Container, TemplateEngine, Database};
 use App\Services\ValidatorService;
 use App\Config\Paths;
+use App\Services\{UserService, TransactionService};
 
 return [
     TemplateEngine::class => fn () => new TemplateEngine(Paths::VIEW),
@@ -16,5 +17,13 @@ return [
         ],
         $_ENV['DB_USER'],
         $_ENV['DB_PASS']
-    )
+    ),
+    UserService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new UserService($db);
+    },
+    TransactionService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new TransactionService($db);
+    }
 ];
