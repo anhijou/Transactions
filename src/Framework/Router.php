@@ -8,6 +8,7 @@ class Router
 {
     private array $routes = [];
     private array $middleware = [];
+    private array $errorHandler;
 
     public function add(string $method, string $path, array $controller)
     {
@@ -41,6 +42,7 @@ class Router
             if (!preg_match("#^{$route['regexPath']}$#", $path, $paramValues) || $route['method'] !== $method) {
                 continue;
             }
+
             array_shift($paramValues);
             preg_match_all('#{([^/]+)}#', $route['path'], $paramKeys);
 
@@ -65,6 +67,7 @@ class Router
             $action();
             return;
         }
+        $this->dispatchNotFound($container);
     }
     public function addMiddleware(string $middleware)
     {
@@ -75,5 +78,29 @@ class Router
     {
         $lastRouteKey = array_key_last($this->routes);
         $this->routes[$lastRouteKey]['middlewares'][] = $middleware;
+    }
+
+    public function setErrorHandler(array $controller)
+    {
+        $this->errorHandler = $controller;
+    }
+
+    public function dispatchNotFound(?Container $container)
+    {
+        [$class, $function] = $this->errorHandler;
+
+        $ControllerInstence = $container ?
+            $container->resolve($class) :
+            new $class;
+
+        $action = fn () => $ControllerInstence->$function();
+
+        foreach ($this->middleware as $middleware) {
+            $middlewareInstence = $container ?
+                $container->resolve($middleware) :
+                new $class;
+            $action = fn () => $middlewareInstence->process($action);
+        }
+        $action();
     }
 }

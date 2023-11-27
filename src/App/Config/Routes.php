@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Config;
 
 use Framework\App;
-use App\Controllers\{AboutController, HomeController, AuthController, TransactionController, ReceiptController};
+use App\Controllers\{AboutController, HomeController, AuthController, TransactionController, ReceiptController, ErrorController};
 use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware};
 
 function registerRoutes(App $app)
@@ -27,4 +27,5 @@ function registerRoutes(App $app)
     $app->post("/transaction/{transaction}/receipt", [ReceiptController::class, "upload"])->add(AuthRequiredMiddleware::class);
     $app->get("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "download"])->add(AuthRequiredMiddleware::class);
     $app->delete("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "delete"])->add(AuthRequiredMiddleware::class);
+    $app->setErrorHandler([ErrorController::class, "notFound"]);
 }
