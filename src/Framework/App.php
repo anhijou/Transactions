@@ -21,9 +21,17 @@ class App
     }
     public function run()
     {
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $method = $_SERVER['REQUEST_METHOD'];
-        $this->router->dispatch($path, $method, $this->container);
+
+        try {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+            $method = $_SERVER['REQUEST_METHOD'];
+            $this->router->dispatch($path, $method, $this->container);
+        } catch (\Exception $e) {
+
+            error_log($e->getMessage());
+            http_response_code(500);
+            echo "An error occurred. Please try again later.";
+        }
     }
     public function get(string $path, array $controller): App
     {
