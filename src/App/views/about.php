@@ -5,7 +5,7 @@
     <h3>About Page</h3>
 
     <hr />
-
+     <p>this is a transactions app</p>
     <!-- Escaping Data -->
     <p>Escaping Data: </p>
 </section>
